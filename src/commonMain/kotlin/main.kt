@@ -1,3 +1,7 @@
+import GameEngine.Basic.Point
+import GameEngine.Data.EnemyData
+import GameEngine.Data.GameStateModel
+import GameEngine.Data.PlayerData
 import com.soywiz.klock.seconds
 import com.soywiz.korge.*
 import com.soywiz.korge.tween.*
@@ -9,18 +13,26 @@ import com.soywiz.korma.geom.degrees
 import com.soywiz.korma.interpolation.Easing
 
 suspend fun main() = Korge(width = 512, height = 512, bgcolor = Colors["#2b2b2b"]) {
-	val minDegrees = (-16).degrees
-	val maxDegrees = (+16).degrees
+	val model = GameStateModel(
+		PlayerData(Point(0.0, 0.0), 20.0),
+		mutableListOf(
+			EnemyData(
+				Point(100.0, 100.0), 10.0
+			),
+			EnemyData(
+				Point(150.0, 150.0), 10.0
+			)
+		)
+	)
 
-	val image = image(resourcesVfs["korge.png"].readBitmap()) {
-		rotation = maxDegrees
-		anchor(.5, .5)
-		scale(.8)
-		position(256, 256)
-	}
+	val playerView = circle(model.player.size, Colors.BLUE)
+	val enemiesView = model.enemies.map { circle(it.size, Colors.RED) }
 
-	while (true) {
-		image.tween(image::rotation[minDegrees], time = 1.seconds, easing = Easing.EASE_IN_OUT)
-		image.tween(image::rotation[maxDegrees], time = 1.seconds, easing = Easing.EASE_IN_OUT)
+	addUpdater {
+		playerView.xy(model.player.currentPosition.x, model.player.currentPosition.y)
+		enemiesView.forEachIndexed { index, circle ->
+			val enemy = model.enemies[index]
+			circle.xy(enemy.currentPosition.x, enemy.currentPosition.y)
+		}
 	}
 }
