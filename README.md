@@ -1,4 +1,3 @@
-
 <!-- PROJECT LOGO -->
 # Game Project - Dodge 
 
@@ -8,6 +7,7 @@
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
+
 
 A game project which is made by Kotlin & KorGE.
 
@@ -91,3 +91,16 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Maplewing - [@sinmaplewing](https://twitter.com/sinmaplewing) - sinmaplewing@gmail.com
 
 Project Link: [https://github.com/sinmaplewing/game-project-dodge](https://github.com/sinmaplewing/game-project-dodge)
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/sinmaplewing/game-project-dodge
+[contributors-url]: https://github.com/sinmaplewing/game-project-dodge/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/sinmaplewing/game-project-dodge
+[forks-url]: https://github.com/sinmaplewing/game-project-dodge/network/members
+[stars-shield]: https://img.shields.io/github/stars/sinmaplewing/game-project-dodge
+[stars-url]: https://github.com/sinmaplewing/game-project-dodge/stargazers
+[issues-shield]: https://img.shields.io/github/issues/sinmaplewing/game-project-dodge
+[issues-url]: https://github.com/sinmaplewing/game-project-dodge/issues
+[license-shield]: https://img.shields.io/github/license/sinmaplewing/game-project-dodge
+[license-url]: https://github.com/sinmaplewing/game-project-dodge/blob/master/LICENSE.txt
