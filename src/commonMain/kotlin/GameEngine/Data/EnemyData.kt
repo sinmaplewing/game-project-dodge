@@ -1,9 +1,10 @@
 package GameEngine.Data
 
-import GameEngine.Basic.Point
+import GameEngine.Basic.Circle
+import GameEngine.Basic.Vector
 
 data class EnemyData(
-    var currentPosition: Point,
-    val size: Double,
-    val speed: Double
+    var currentPosition: Circle,
+    val speed: Double,
+    val moveDirection: Vector
 )
