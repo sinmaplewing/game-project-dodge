@@ -7,6 +7,9 @@ data class Vector(val x: Double, val y: Double) {
         val ZERO: Vector = Vector(0.0, 0.0)
     }
 
+    operator fun plus(v: Vector): Vector =
+        Vector(x + v.x, y + v.y)
+
     operator fun times(n: Double): Vector =
         Vector(x * n, y * n)
 
