@@ -2,8 +2,10 @@ package GameEngine.Data
 
 enum class GameState {
     Init,
+    Start,
     GamePlay,
-    GameOver
+    GameOver,
+    Restart
 }
 
 data class GameStateModel(
