@@ -1,5 +1,6 @@
 package GameEngine
 
+import GameEngine.Basic.Circle
 import GameEngine.Basic.Vector
 import GameEngine.Data.GameStateModel
 
@@ -8,7 +9,8 @@ class DodgeGameEngine(
 ) {
     fun update(inputDirection: Vector) {
         val player = gameStateModel.player
-        gameStateModel.player.currentPosition =
-            player.currentPosition + inputDirection.normalize() * player.speed
+        val nextPosition = (player.currentPosition.center + inputDirection.normalize() * player.speed)
+        player.currentPosition = Circle(nextPosition, player.currentPosition.radius)
+            .coerceIn(gameStateModel.gamePlayContext.gamePlayRange)
     }
 }

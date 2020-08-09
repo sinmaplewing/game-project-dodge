@@ -1,10 +1,8 @@
 package GameEngine.Data
 
-import GameEngine.Basic.Point
-import com.soywiz.kds.DoubleStack
+import GameEngine.Basic.Circle
 
 data class PlayerData(
-    var currentPosition: Point,
-    val size: Double,
+    var currentPosition: Circle,
     val speed: Double
 )

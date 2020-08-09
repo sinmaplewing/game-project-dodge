@@ -10,6 +10,12 @@ data class Point(val x: Double, val y: Double) {
 
     operator fun minus(p: Point): Vector =
         Vector(x - p.x, y - p.y)
+
+    fun coerceIn(r: Rectangle) =
+        Point(
+            x.coerceIn(r.leftTop.x, r.rightBottom.x),
+            y.coerceIn(r.leftTop.y, r.rightBottom.y)
+        )
 }
 
 fun com.soywiz.korma.geom.Point.toPoint(): Point =
