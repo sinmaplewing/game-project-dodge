@@ -25,7 +25,7 @@ suspend fun main() = Korge(
 			Point(0.0, 0.0),
 			Point(width, height)
 		)),
-		PlayerData(GameEngine.Basic.Circle(Point(0.0, 0.0), 20.0), 5.0),
+		PlayerData(GameEngine.Basic.Circle(Point(0.0, 0.0), 20.0), 500.0),
 		mutableListOf(
 			EnemyData(
 				Point(100.0, 100.0), 10.0, 5.0
@@ -49,7 +49,7 @@ suspend fun main() = Korge(
 
 	addUpdater {
 		inputHandler.update()
-		engine.update(inputHandler.currentInputDirection)
+		engine.update(it.seconds, inputHandler.currentInputDirection)
 		playerView.xy(
 			model.player.currentPosition.center.x - model.player.currentPosition.radius,
 			model.player.currentPosition.center.y - model.player.currentPosition.radius)
