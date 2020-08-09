@@ -6,6 +6,8 @@ import Input.PlayerMoveInputHandler
 import Input.PlayerMoveKeyboardInputHandler
 import Input.PlayerMoveMouseInputHandler
 import Input.PlayerMoveTouchInputHandler
+import SpriteAnimation.PersonSpriteAnimationLoader
+import com.soywiz.klock.milliseconds
 import com.soywiz.kmem.toIntFloor
 import com.soywiz.korev.Key
 import com.soywiz.korge.input.Input
@@ -15,6 +17,7 @@ import com.soywiz.korge.scene.ScaledScene
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
+import com.soywiz.korim.color.RGBA
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korma.geom.ISize
 
@@ -58,10 +61,11 @@ class GamePlayScene() : Scene() {
             ),
             PlayerData(
                 GameEngine.Basic.Circle(
-                    Point(width / 2.0, height / 2.0), 10.0
+                    Point(width / 2.0, height / 2.0), 5.0
                 ),
                 500.0,
-                false
+                false,
+                ActionType.Down
             ),
             mutableListOf(),
             GameState.Init,
@@ -76,11 +80,20 @@ class GamePlayScene() : Scene() {
                 PlayerMoveKeyboardInputHandler(views.input)
             )
         )
+        val uiBackground = solidRect(width, height, RGBA(0, 0, 0, 128))
+
         val playerView = Circle(model.player.currentPosition.radius, Colors.RED)
             .xy(
                 model.player.currentPosition.center.x - model.player.currentPosition.radius,
                 model.player.currentPosition.center.y - model.player.currentPosition.radius
             )
+        val playerAnimations = PersonSpriteAnimationLoader.load("maplewing.png")
+        val playerSprite = Sprite(playerAnimations.values.first()).scale(0.2)
+        playerSprite.xy(
+        model.player.currentPosition.center.x - playerSprite.scaledWidth / 2,
+        model.player.currentPosition.center.y - playerSprite.scaledHeight / 2
+        )
+
         val enemyViews = mutableListOf<Circle>()
         val scoreText = text("").xy(0, 0)
         val pressToStartText = text("Press SPACE / SCREEN to start")
@@ -94,7 +107,7 @@ class GamePlayScene() : Scene() {
             height / 2 - pressToRestartText.height / 2
         )
 
-        onClick {
+        uiBackground.onClick {
             changeGameState(model)
         }
         onKeyUp {
@@ -108,7 +121,10 @@ class GamePlayScene() : Scene() {
                 GameState.Start -> {
                     model.currentState = GameState.GamePlay
                     removeChild(pressToStartText)
+                    removeChild(uiBackground)
 
+                    addChild(playerSprite)
+                    playerSprite.playAnimationLooped(spriteDisplayTime = 200.0.milliseconds)
                     addChild(playerView)
                     addChild(scoreText)
                 }
@@ -130,9 +146,18 @@ class GamePlayScene() : Scene() {
                         model.player.currentPosition.center.x - model.player.currentPosition.radius,
                         model.player.currentPosition.center.y - model.player.currentPosition.radius
                     )
+                    playerSprite.xy(
+                        model.player.currentPosition.center.x - playerSprite.scaledWidth / 2,
+                        model.player.currentPosition.center.y - playerSprite.scaledHeight / 2
+                    )
+                    playerSprite.playAnimationLooped(
+                        playerAnimations[model.player.currentActionType],
+                        spriteDisplayTime = 200.0.milliseconds
+                    )
 
                     if (model.player.isDead) {
                         model.currentState = GameState.GameOver
+                        addChild(uiBackground)
                         addChild(pressToRestartText)
                     }
                 }

@@ -2,7 +2,9 @@ package GameEngine
 
 import GameEngine.Basic.Circle
 import GameEngine.Basic.Vector
+import GameEngine.Data.ActionType
 import GameEngine.Data.GameStateModel
+import kotlin.math.absoluteValue
 
 class DodgeGameEngine(
     private val gameStateModel: GameStateModel
@@ -52,5 +54,22 @@ class DodgeGameEngine(
         val nextPosition = (player.currentPosition.center + inputDirection.normalize() * player.speed * deltaTime)
         player.currentPosition = Circle(nextPosition, player.currentPosition.radius)
             .coerceIn(gameStateModel.stageInfo.gamePlayRange)
+
+        if (inputDirection == Vector.ZERO) return
+        when {
+            inputDirection.x.absoluteValue >= inputDirection.y.absoluteValue -> {
+                when {
+                    inputDirection.x > 0 -> player.currentActionType = ActionType.Right
+                    else -> player.currentActionType = ActionType.Left
+                }
+            }
+
+            else -> {
+                when {
+                    inputDirection.y > 0 -> player.currentActionType = ActionType.Down
+                    else -> player.currentActionType = ActionType.Up
+                }
+            }
+        }
     }
 }
