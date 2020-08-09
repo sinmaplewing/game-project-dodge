@@ -28,4 +28,8 @@ data class Circle(val center: Point, val radius: Double) {
 
         return Circle(Point(x, y), radius)
     }
+
+    fun collidesWith(c: Circle) =
+        (center - c.center).length() <= radius + c.radius
+
 }

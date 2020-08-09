@@ -16,7 +16,9 @@ data class Vector(val x: Double, val y: Double) {
     operator fun div(n: Double): Vector =
         Vector(x / n, y / n)
 
+    fun length() = hypot(x, y)
+
     fun normalize(): Vector =
         if (x == 0.0 && y == 0.0) ZERO
-        else this / hypot(x, y)
+        else this / length()
 }

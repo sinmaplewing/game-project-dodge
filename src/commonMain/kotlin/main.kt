@@ -6,7 +6,10 @@ import Input.PlayerMoveInputHandler
 import Input.PlayerMoveKeyboardInputHandler
 import Input.PlayerMoveMouseInputHandler
 import Input.PlayerMoveTouchInputHandler
+import com.soywiz.kmem.toIntFloor
+import com.soywiz.korev.Key
 import com.soywiz.korge.*
+import com.soywiz.korge.input.Input
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 
@@ -50,8 +53,16 @@ suspend fun main() = Korge(
 				Point(width + 100.0, height + 100.0)
 			)
 		),
-		PlayerData(GameEngine.Basic.Circle(Point(0.0, 0.0), 10.0), 500.0),
-		mutableListOf()
+		PlayerData(
+			GameEngine.Basic.Circle(
+				Point(width / 2.0, height / 2.0), 10.0
+			),
+			500.0,
+			false
+		),
+		mutableListOf(),
+		GameState.Init,
+		0.0
 	)
 
 	val engine = DodgeGameEngine(model)
@@ -62,22 +73,56 @@ suspend fun main() = Korge(
 			PlayerMoveKeyboardInputHandler(views.input)
 		)
 	)
-	val playerView = circle(model.player.currentPosition.radius, Colors.RED)
+	val playerView = Circle(model.player.currentPosition.radius, Colors.RED)
+		.xy(
+			model.player.currentPosition.center.x - model.player.currentPosition.radius,
+			model.player.currentPosition.center.y - model.player.currentPosition.radius
+		)
 	val enemyViews = mutableListOf<Circle>()
+	val scoreText = text("").xy(0, 0)
+	val pressToStartText = text("Press SPACE / SCREEN to start")
+	pressToStartText.xy(
+		width / 2 - pressToStartText.width / 2,
+		height / 2 - pressToStartText.height / 2
+	)
 
 	addUpdater {
-		inputHandler.update()
-		engine.update(it.seconds, inputHandler.currentInputDirection)
+		when (model.currentState) {
+			GameState.Init -> {
+				if (isPressed(views.input)) {
+					model.currentState = GameState.GamePlay
+					removeChild(pressToStartText)
 
-		updateEnemyViews(
-			this,
-			model.enemies.toTypedArray(),
-			enemyViews
-		)
+					addChild(playerView)
+					addChild(scoreText)
+				}
+			}
 
-		playerView.xy(
-			model.player.currentPosition.center.x - model.player.currentPosition.radius,
-			model.player.currentPosition.center.y - model.player.currentPosition.radius)
+			GameState.GamePlay -> {
+				inputHandler.update()
+				engine.update(it.seconds, inputHandler.currentInputDirection)
+
+				model.score += it.seconds
+				scoreText.text = "Score: ${model.score.toIntFloor()}"
+
+				updateEnemyViews(
+					this,
+					model.enemies.toTypedArray(),
+					enemyViews
+				)
+
+				playerView.xy(
+					model.player.currentPosition.center.x - model.player.currentPosition.radius,
+					model.player.currentPosition.center.y - model.player.currentPosition.radius
+				)
+
+				if (model.player.isDead) {
+					model.currentState = GameState.GameOver
+				}
+			}
+
+			else -> {}
+		}
 	}
 }
 
@@ -96,13 +141,17 @@ private fun updateEnemyViews(
 
 	enemyViews.forEachIndexed { index, circle ->
 		val currentEnemy = enemiesData[index]
-		println(currentEnemy.currentPosition)
 
 		circle.color = Colors.ORANGE
 		circle.radius = currentEnemy.currentPosition.radius
 		circle.xy(
-			currentEnemy.currentPosition.center.x,
-			currentEnemy.currentPosition.center.y
+			currentEnemy.currentPosition.center.x - currentEnemy.currentPosition.radius,
+			currentEnemy.currentPosition.center.y - currentEnemy.currentPosition.radius
 		)
 	}
 }
+
+fun isPressed(input: Input) =
+	input.keys.justReleased(Key.SPACE) ||
+		input.mouseButtons > 0 ||
+		input.activeTouches.isNotEmpty()

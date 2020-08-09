@@ -4,5 +4,6 @@ import GameEngine.Basic.Circle
 
 data class PlayerData(
     var currentPosition: Circle,
-    val speed: Double
+    val speed: Double,
+    var isDead: Boolean
 )

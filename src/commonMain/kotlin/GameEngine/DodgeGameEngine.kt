@@ -17,6 +17,14 @@ class DodgeGameEngine(
     fun update(deltaTime: Double, inputDirection: Vector) {
         updateEnemy(deltaTime)
         updatePlayer(deltaTime, inputDirection)
+
+        if (gameStateModel.enemies.any {
+                it.currentPosition.collidesWith(
+                    gameStateModel.player.currentPosition
+                )
+        }) {
+            gameStateModel.player.isDead = true
+        }
     }
 
     private fun updateEnemy(deltaTime: Double) {
@@ -33,7 +41,7 @@ class DodgeGameEngine(
         }
 
         gameStateModel.enemies.filter {
-            !gameStateModel.stageInfo.enemyExistedRange.contains(it.currentPosition)
+            !gameStateModel.stageInfo.enemyExistedRange.collidesWith(it.currentPosition)
         }.forEach {
             gameStateModel.enemies.remove(it)
         }
