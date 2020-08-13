@@ -4,8 +4,8 @@ import GameEngine.Basic.Rectangle
 
 data class StageInfo(
     val gamePlayRange: Rectangle,
-    val enemyGeneratorsData: Array<EnemyInfo>,
-    val enemyExistedRange: Rectangle
+    val enemiesData: Array<EnemyInfo>,
+    val bulletExistedRange: Rectangle
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -14,16 +14,16 @@ data class StageInfo(
         other as StageInfo
 
         if (gamePlayRange != other.gamePlayRange) return false
-        if (!enemyGeneratorsData.contentEquals(other.enemyGeneratorsData)) return false
-        if (enemyExistedRange != other.enemyExistedRange) return false
+        if (!enemiesData.contentEquals(other.enemiesData)) return false
+        if (bulletExistedRange != other.bulletExistedRange) return false
 
         return true
     }
 
     override fun hashCode(): Int {
         var result = gamePlayRange.hashCode()
-        result = 31 * result + enemyGeneratorsData.contentHashCode()
-        result = 31 * result + enemyExistedRange.hashCode()
+        result = 31 * result + enemiesData.contentHashCode()
+        result = 31 * result + bulletExistedRange.hashCode()
         return result
     }
 }

@@ -10,7 +10,7 @@ class DodgeGameEngine(
     private val gameStateModel: GameStateModel
 ) {
     private val enemies: Array<Enemy> =
-        gameStateModel.stageInfo.enemyGeneratorsData
+        gameStateModel.stageInfo.enemiesData
             .map {
                 Enemy(gameStateModel, it)
             }.toTypedArray()
@@ -43,7 +43,7 @@ class DodgeGameEngine(
         }
 
         gameStateModel.bullets.filter {
-            !gameStateModel.stageInfo.enemyExistedRange.collidesWith(it.currentPosition)
+            !gameStateModel.stageInfo.bulletExistedRange.collidesWith(it.currentPosition)
         }.forEach {
             gameStateModel.bullets.remove(it)
         }

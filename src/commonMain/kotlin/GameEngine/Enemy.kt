@@ -8,7 +8,7 @@ import kotlin.random.Random
 
 const val BULLET_SIZE = 5.0
 const val BULLET_MIN_SPEED = 250.0
-const val BULLET_MAX_SPEED = 1000.0
+const val BULLET_MAX_SPEED = 250.0
 
 class Enemy(
     val gameStateModel: GameStateModel,
