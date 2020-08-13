@@ -10,16 +10,13 @@ import SpriteAnimation.PersonSpriteAnimationLoader
 import com.soywiz.klock.milliseconds
 import com.soywiz.kmem.toIntFloor
 import com.soywiz.korev.Key
-import com.soywiz.korge.input.Input
 import com.soywiz.korge.input.onClick
 import com.soywiz.korge.input.onKeyUp
-import com.soywiz.korge.scene.ScaledScene
 import com.soywiz.korge.scene.Scene
 import com.soywiz.korge.view.*
 import com.soywiz.korim.color.Colors
 import com.soywiz.korim.color.RGBA
 import com.soywiz.korio.async.launchImmediately
-import com.soywiz.korma.geom.ISize
 
 class GamePlayScene() : Scene() {
     override suspend fun Container.sceneInit()  {
@@ -33,22 +30,22 @@ class GamePlayScene() : Scene() {
                     Point(width, height)
                 ),
                 arrayOf(
-                    EnemyGeneratorInfo(
+                    EnemyInfo(
                         Point(-50.0, -50.0),
                         1.0,
                         0.5
                     ),
-                    EnemyGeneratorInfo(
+                    EnemyInfo(
                         Point(width + 50.0, -50.0),
                         0.5,
                         0.25
                     ),
-                    EnemyGeneratorInfo(
+                    EnemyInfo(
                         Point(-50.0, height + 50.0),
                         0.3,
                         0.1
                     ),
-                    EnemyGeneratorInfo(
+                    EnemyInfo(
                         Point(width + 50.0, height + 50.0),
                         1.5,
                         0.9
@@ -138,7 +135,7 @@ class GamePlayScene() : Scene() {
 
                     updateEnemyViews(
                         this,
-                        model.enemies.toTypedArray(),
+                        model.bullets.toTypedArray(),
                         enemyViews
                     )
 
@@ -173,7 +170,7 @@ class GamePlayScene() : Scene() {
 
     private fun updateEnemyViews(
         container: Container,
-        enemiesData: Array<EnemyData>,
+        enemiesData: Array<BulletData>,
         enemyViews: MutableList<Circle>
     ) {
         while (enemyViews.size < enemiesData.size) {

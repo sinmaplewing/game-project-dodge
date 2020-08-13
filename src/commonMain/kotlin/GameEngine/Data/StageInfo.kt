@@ -4,7 +4,7 @@ import GameEngine.Basic.Rectangle
 
 data class StageInfo(
     val gamePlayRange: Rectangle,
-    val enemyGeneratorsData: Array<EnemyGeneratorInfo>,
+    val enemyGeneratorsData: Array<EnemyInfo>,
     val enemyExistedRange: Rectangle
 ) {
     override fun equals(other: Any?): Boolean {

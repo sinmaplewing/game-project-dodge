@@ -11,7 +11,7 @@ enum class GameState {
 data class GameStateModel(
     val stageInfo: StageInfo,
     val player: PlayerData,
-    val enemies: MutableList<EnemyData>,
+    val bullets: MutableList<BulletData>,
     var currentState: GameState,
     var score: Double
 )

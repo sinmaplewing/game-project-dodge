@@ -9,10 +9,10 @@ import kotlin.math.absoluteValue
 class DodgeGameEngine(
     private val gameStateModel: GameStateModel
 ) {
-    private val enemyGenerators: Array<EnemyGenerator> =
+    private val enemies: Array<Enemy> =
         gameStateModel.stageInfo.enemyGeneratorsData
             .map {
-                EnemyGenerator(gameStateModel, it)
+                Enemy(gameStateModel, it)
             }.toTypedArray()
 
 
@@ -20,7 +20,7 @@ class DodgeGameEngine(
         updateEnemy(deltaTime)
         updatePlayer(deltaTime, inputDirection)
 
-        if (gameStateModel.enemies.any {
+        if (gameStateModel.bullets.any {
                 it.currentPosition.collidesWith(
                     gameStateModel.player.currentPosition
                 )
@@ -30,11 +30,11 @@ class DodgeGameEngine(
     }
 
     private fun updateEnemy(deltaTime: Double) {
-        enemyGenerators.forEach {
+        enemies.forEach {
             it.update(deltaTime)
         }
 
-        gameStateModel.enemies.forEach {
+        gameStateModel.bullets.forEach {
             it.currentPosition = Circle(
                 it.currentPosition.center
                     + it.moveDirection * it.speed * deltaTime,
@@ -42,10 +42,10 @@ class DodgeGameEngine(
             )
         }
 
-        gameStateModel.enemies.filter {
+        gameStateModel.bullets.filter {
             !gameStateModel.stageInfo.enemyExistedRange.collidesWith(it.currentPosition)
         }.forEach {
-            gameStateModel.enemies.remove(it)
+            gameStateModel.bullets.remove(it)
         }
     }
 
