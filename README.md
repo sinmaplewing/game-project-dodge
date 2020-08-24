@@ -22,6 +22,9 @@ Recently, I haven't decided how this game will be played, so I'll write a protot
 * [Kotlin](http://kotlinlang.org/)
 * [KorGE](https://github.com/korlibs/korge)
 
+### Demo URL
+https://knightzone.studio/raw/game/dodge/
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
